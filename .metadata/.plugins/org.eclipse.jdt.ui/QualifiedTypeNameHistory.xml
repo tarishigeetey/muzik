@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.config.HuggingFaceApiPropertiesConfig"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.services.impl.EmotionRecognitionServiceImpl"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.services.impl.EmotionServiceImpl"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.services.impl.MoodServiceImpl"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.services.impl.GenreServiceImpl"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.services.impl.SpotifyQueryServiceImpl"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.model.EmotionType"/>
+    <fullyQualifiedTypeName name="tarishi.project.muzik.model.Track"/>
+</qualifiedTypeNameHistroy>
