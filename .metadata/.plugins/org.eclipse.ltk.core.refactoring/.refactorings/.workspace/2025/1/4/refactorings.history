@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;backend&apos; to &apos;newbackend&apos;" description="Rename resource &apos;backend&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/backend" name="newbackend" stamp="1737706864013" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;newbackend&apos; to &apos;backend&apos;" description="Rename resource &apos;newbackend&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/newbackend" name="backend" stamp="1737707043664" updateReferences="true"/>
-</session>
