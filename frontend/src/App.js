@@ -10,15 +10,12 @@ function App() {
   return (
     <div className="App d-flex flex-column min-vh-100">
       <TopNavbar />
-      {/* Ensure content takes up the available space */}
-      <div className="flex-grow-1">
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/result" element={<ResultsPage />} />
           <Route path="/about" element={<About />} />
         </Routes>
-      </div>
       <Footer />
     </div>
   );

@@ -1,18 +1,21 @@
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoginButton from "../components/LoginButton";
 import { Alert } from "react-bootstrap";
-import ImageComponent from "../components/ImageComponent";  // Import ImageComponent
+import ImageComponent from "../components/ImageComponent"; // Import ImageComponent
 
 function LoginPage() {
     const [queryParams] = useSearchParams();
     const errorMsg = queryParams.get("error");
 
     return (
-        <div className="container d-flex flex-column align-items-center mb-2"> {/* Reduced margin bottom */}
-            <div className="row align-items-center justify-content-center text-center my-3"> {/* Reduced vertical spacing */}
+        <div className="container d-flex flex-column align-items-center mb-1"> {/* Reduced margin bottom */}
+            <div className="row align-items-center justify-content-center text-center my-2"> {/* Reduced vertical spacing */}
                 {/* Image Section */}
-                <div className="col-md-6 d-flex justify-content-center mb-4 mb-md-0"> {/* Added margin bottom on small screens */}
-                    <ImageComponent /> {/* Use the ImageComponent */}
+                <div className="col-md-6 d-flex justify-content-center mb-3 mb-md-0"> {/* Adjusted margin bottom on small screens */}
+                    <Link to="/about"> {/* Link wrapping the image */}
+                        <ImageComponent customStyle={{ width: '400px', maxWidth: '100%', height: 'auto' }} /> {/* Reasonable size */}
+                    </Link>
                 </div>
                 {/* Text and Button Section */}
                 <div className="col-md-6 d-flex flex-column justify-content-center">

@@ -10,7 +10,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #16161a;
-    color: #ffff00;
+    color: #ffffff;
 }
 
 body {
@@ -53,13 +53,14 @@ span.navbar-toggler-icon {
 
 button {
     background-color: #8f6cf6a0 !important;
-    color: #ffff00;
+    color: #ffffff;
     outline: none;
     border: none !important;
 }
 
 #loginButton {
     font-weight: 600;
+    color: #ffff00;
 }
 
 #loginButton:active {

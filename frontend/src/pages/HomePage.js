@@ -3,7 +3,6 @@ import MoodInput from '../components/MoodInput';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import recordImage from '../assets/record.png';  // Import the image from src/assets
 
 function HomePage() {
     const [user, setUser] = useState({ userId: null, displayName: null });
@@ -15,17 +14,16 @@ function HomePage() {
                 method: "GET",
                 credentials: "include",
             });
-            if (response.ok) { // authorized user
+            if (response.ok) {
                 const data = await response.json();
                 setUser({ userId: data.userId, displayName: data.displayName });
-            } else if (response.status === 401) { // unauthorized access
-                navigate("/"); // go back to login page
+            } else if (response.status === 401) {
+                navigate("/");
             }
         }
         fetchUserDetails();
-    }, [navigate]); // Added dependency array for better useEffect behavior
+    }, [navigate]);
 
-    // Animation variants for the container
     const containerVariants = {
         hidden: { opacity: 0, y: -50 },
         visible: {
@@ -35,7 +33,6 @@ function HomePage() {
         },
     };
 
-    // Animation variants for the text
     const h1Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
@@ -62,15 +59,6 @@ function HomePage() {
                 variants={containerVariants}
                 className="text-center"
             >
-                {/* Add the rotating image */}
-                <motion.img
-                    src={recordImage}  // Using the imported image
-                    alt="Record"
-                    className="rotating-image mb-0"  // Adding the rotating class
-                    style={{ width: '100px', height: 'auto', marginBottom: '-20px' }}
-                    variants={h1Variants}
-                />
-
                 <motion.h1 variants={h1Variants}>
                     hello, <span id="userName">{user.displayName}</span>
                 </motion.h1>
