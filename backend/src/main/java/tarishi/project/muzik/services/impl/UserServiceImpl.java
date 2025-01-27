@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import tarishi.project.muzik.model.Users;
+import tarishi.project.muzik.model.User;
 import tarishi.project.muzik.repository.UserRepository;
 import tarishi.project.muzik.services.UserService;
 
@@ -18,15 +18,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Users saveUser(String email) {
+	public User saveUser(String email) {
 		if (email == null || email.isBlank()) {
 			throw new IllegalArgumentException("Email cannot be null or empty");
 		}
 		return userRepository.findByEmail(email).orElseGet(() -> createUser(email));
 	}
 	
-	private Users createUser(String email) {
-		Users user = new Users();
+	private User createUser(String email) {
+		User user = new User();
 		user.setEmail(email);
 		return userRepository.save(user);
 	}

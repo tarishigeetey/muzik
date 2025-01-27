@@ -6,7 +6,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import tarishi.project.muzik.model.Users;
+import tarishi.project.muzik.model.User;
 
 import java.util.Optional;
 
@@ -23,14 +23,14 @@ class UserRepositoryTest {
     @Test
     public void findByEmail_validEmail_returnsUser() {
         // Arrange
-        Users user = Users.builder()
+        User user = User.builder()
                 .email("test@xyz.com")
                 .build();
 
         userRepository.save(user);
 
         // Act
-        Optional<Users> foundUser = userRepository.findByEmail("test@xyz.com");
+        Optional<User> foundUser = userRepository.findByEmail("test@xyz.com");
 
         // Assert
         assertTrue(foundUser.isPresent());
@@ -40,15 +40,15 @@ class UserRepositoryTest {
     @Test
     public void findByEmail_invalidEmail_returnsEmptyOptional() {
         // Arrange
-        Users user = Users.builder()
+        User user = User.builder()
                 .email("test@xyz.com")
                 .build();
 
         userRepository.save(user);
 
         // Act
-        Optional<Users> result1 = userRepository.findByEmail("testing@xyz.com");
-        Optional<Users> result2 = userRepository.findByEmail("");
+        Optional<User> result1 = userRepository.findByEmail("testing@xyz.com");
+        Optional<User> result2 = userRepository.findByEmail("");
 
         // Assert
         assertFalse(result1.isPresent());
