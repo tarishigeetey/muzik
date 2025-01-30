@@ -1,9 +1,9 @@
 import Form from 'react-bootstrap/Form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Loading from './Loading';
 
-function MoodInput() {
+function MoodInput({userId}) {
     const [userMood, setUserMood] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -22,34 +22,32 @@ function MoodInput() {
 
         console.log('Submitted mood:', userMood);
 
-        const mood = encodeURIComponent(userMood.trim());
+        const mood = encodeURIComponent(userMood.trim()); // remove whitespace from user input
 
         if (mood.length === 0 || mood.length < 3) {
             alert('Please enter a valid mood');
             return;
         }
 
-        // Show the loading spinner as soon as the submit is clicked
         setIsLoading(true);
 
-        try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tracks?submission=${mood}`, {
-                method: 'GET',
-                credentials: 'include',
-            });
+        // Call backend to fetch tracks
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-tracks?submission=${mood}&userId=${userId}`, {
+            method: 'GET',
+            credentials: 'include', // Important to send cookies
+        }).catch(handleError);
 
-            const data = await response.json();
 
-            if (response.ok) {
-                // Redirect immediately after fetching data
-                window.location.href = `/result?data=${encodeURIComponent(JSON.stringify(data))}`;
-            } else {
-                alert('Failed to fetch tracks. Please try again.');
-            }
-        } catch (error) {
-            handleError(error);
-        } finally {
-            setIsLoading(false); // Hide the loading spinner after the fetch completes
+        const data = await response.json().catch(handleError);
+
+        if (response.ok) {
+            // Pass the data as a prop to the result page
+            setTimeout(() =>
+                window.location.href = `/result?data=${encodeURIComponent(JSON.stringify(data))}`
+                , 5000);
+
+        } else {
+            alert('Failed to fetch tracks. Please try again.');
         }
     }
 
@@ -80,6 +78,8 @@ function MoodInput() {
         },
     };
 
+
+
     return (
         <>
             {isLoading ? <Loading /> :
@@ -90,16 +90,18 @@ function MoodInput() {
                     className="d-flex justify-content-center align-items-center">
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formUserMood">
+
                             <motion.label variants={textVariants}>
                                 <Form.Label hidden>Describe how you feel</Form.Label>
                             </motion.label>
+
                             <motion.div variants={inputVariants}>
                                 <Form.Control
                                     type="text"
                                     onChange={handleChange}
                                     value={userMood}
                                     autoComplete="off"
-                                    placeholder='"I miss my home"'
+                                    placeholder='"i am home sick"'
                                     required
                                     className="form-control-lg"
                                 />

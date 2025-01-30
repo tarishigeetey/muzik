@@ -5,25 +5,43 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 function HomePage() {
-    const [user, setUser] = useState({ userId: null, displayName: null });
+    const [userName, setUserName] = useState(null);
     const navigate = useNavigate();
 
+    // Get spotify userId from query parameters
+    const queryParams = new URLSearchParams(window.location.search);
+    const userId = queryParams.get('userId');
+
+    if (!userId) {
+        navigate("/?error=Unauthorized");
+    }
+
     useEffect(() => {
+
         async function fetchUserDetails() {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user-details`, {
-                method: "GET",
-                credentials: "include",
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setUser({ userId: data.userId, displayName: data.displayName });
-            } else if (response.status === 401) {
-                navigate("/");
+
+            try {
+                console.log(`Fetching user details for userId: ${userId}`);
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user-details?userId=${encodeURIComponent(userId)}`, {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserName(data.displayName);
+                } else if (response.status === 401) {
+                    console.error("Unauthorized access.");
+                    navigate("/?error=Unauthorized"); // Redirect to login page
+                }
+            } catch (error) {
+                console.error("Error fetching user details:", error);
             }
         }
         fetchUserDetails();
     }, [navigate]);
 
+    // Animation variants for the container
     const containerVariants = {
         hidden: { opacity: 0, y: -50 },
         visible: {
@@ -33,12 +51,13 @@ function HomePage() {
         },
     };
 
+    // Animation variants for the text
     const h1Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { delay: 0.2, duration: 1 },
+            transition: { delay: 0.5, duration: 1 },
         },
     };
 
@@ -52,22 +71,21 @@ function HomePage() {
     };
 
     return (
-        <Container className="custom-container">
+        <Container>
             <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
-                className="text-center"
             >
                 <motion.h1 variants={h1Variants}>
-                    hello, <span id="userName">{user.displayName}</span>
+                    hey <span id="userId">{userName}</span>
                 </motion.h1>
 
                 <motion.h5 variants={h5Variants}>
-                    what’s your vibe today?
+                    what's your mood today?
                 </motion.h5>
 
-                <MoodInput />
+                <MoodInput userId={userId} />
             </motion.div>
         </Container>
     );
