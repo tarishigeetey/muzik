@@ -92,7 +92,7 @@ function MoodInput({userId}) {
                         <Form.Group controlId="formUserMood">
 
                             <motion.label variants={textVariants}>
-                                <Form.Label hidden>describe how you feel</Form.Label>
+                                <Form.Label hidden>Describe how you feel</Form.Label>
                             </motion.label>
 
                             <motion.div variants={inputVariants}>
@@ -101,7 +101,7 @@ function MoodInput({userId}) {
                                     onChange={handleChange}
                                     value={userMood}
                                     autoComplete="off"
-                                    placeholder='"I am home sick"'
+                                    placeholder='"i am home sick"'
                                     required
                                     className="form-control-lg"
                                 />
