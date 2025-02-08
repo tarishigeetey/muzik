@@ -3,18 +3,14 @@ package tarishi.project.muzik.services.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import tarishi.project.muzik.config.HuggingFaceApiPropertiesConfig;
 import tarishi.project.muzik.services.EmotionRecognitionService;
-
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 
 @Service
@@ -33,24 +29,21 @@ public class EmotionRecognitionServiceImpl implements EmotionRecognitionService 
     public boolean isModelReady() {
         final String HF_API_URL = hfPropertiesConfig.getApiUrl();
         final String HF_API_TOKEN = hfPropertiesConfig.getApiToken();
-        final String RANDOM_INPUT = "I am happy today";
+        final String RANDOM_INPUT = "I feel happy today";
 
-        // Build HTTP request headers
+        // build HTTP request
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + HF_API_TOKEN);
 
-        // Encode the random input to prevent encoding issues
-        String encodedRandomInput = URLEncoder.encode(RANDOM_INPUT, StandardCharsets.UTF_8);
+        // pass the input as part of the body
+        String body = " {\"inputs\": \"" + RANDOM_INPUT + "\"}";
 
-        // Pass the encoded input as part of the body
-        String body = " {\"inputs\": \"" + encodedRandomInput + "\"}";
-
-        // Complete building the HTTP request
+        // complete building the HTTP request
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
         try {
-            // Make the API call
+            // make the API call
             ResponseEntity<String> response = restTemplate.exchange(
                     URI.create(HF_API_URL), HttpMethod.POST, entity, String.class);
 
@@ -103,8 +96,7 @@ public class EmotionRecognitionServiceImpl implements EmotionRecognitionService 
     }
 
     // helper function extracts the emotion from the JSON response
-    @SuppressWarnings("serial")
-	private String extractEmotion(String responseBody) throws JsonProcessingException {
+    private String extractEmotion(String responseBody) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(responseBody);
         JsonNode generatedTextNode = rootNode.findValue("generated_text");
