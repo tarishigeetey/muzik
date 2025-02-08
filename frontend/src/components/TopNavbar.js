@@ -22,7 +22,7 @@ export default function TopNavbar() {
                 <Col className="text-start col-9">
                     <Navbar.Brand className="me-auto">
                         <Nav.Link as={NavLink} to={loggedInNavItemUrl} className="text-white">
-                            <h3 id="brandName">muzik.</h3>
+                            <h3 id="brandName">MUZIK.</h3>
                         </Nav.Link>
                     </Navbar.Brand>
                 </Col>
