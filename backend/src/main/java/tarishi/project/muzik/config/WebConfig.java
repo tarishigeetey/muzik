@@ -20,6 +20,8 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedOrigins(frontEndConfig.getUrl())
                 .allowedMethods("GET", "POST")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+                .exposedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }

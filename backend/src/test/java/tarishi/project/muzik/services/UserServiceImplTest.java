@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import tarishi.project.muzik.model.Users;
+import tarishi.project.muzik.model.User;
 import tarishi.project.muzik.repository.UserRepository;
 import tarishi.project.muzik.services.impl.UserServiceImpl;
 
@@ -27,11 +27,11 @@ class UserServiceImplTest {
 	@Test
 	public void saveUser_existingEmail_returnsExistingUser() {
 		String email = "test123@xyz.com";
-		Users expectedUser = new Users();
+		User expectedUser = new User();
 		expectedUser.setEmail(email);
 		when(userRepository.findByEmail(email)).thenReturn(Optional.of(expectedUser));
 
-		Users actualUser = userService.saveUser(email);
+		User actualUser = userService.saveUser(email);
 
 		assertNotNull(actualUser);
 		assertEquals(email, actualUser.getEmail());

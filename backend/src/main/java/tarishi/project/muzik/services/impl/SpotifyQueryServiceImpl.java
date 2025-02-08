@@ -2,11 +2,8 @@ package tarishi.project.muzik.services.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.servlet.http.HttpSession;
 import tarishi.project.muzik.model.Track;
 import tarishi.project.muzik.services.SpotifyQueryService;
-
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +23,7 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
     }
 
     @Override
-    public String getSpotifyPlaylistId(List<String> genreList, HttpSession session) {
+    public String getSpotifyPlaylistId(List<String> genreList, String accessToken) {
 
         // Set up playlist search query
         String genres = mapGenreListToString(genreList);
@@ -41,7 +38,7 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
         String searchQuery = String.format("https://api.spotify.com/v1/search?q=%s%s", genres, filters);
 
         // Set up query
-        HttpEntity<String> entity = createEntityForSpotifyRequest((String) session.getAttribute("accessToken"));
+        HttpEntity<String> entity = createEntityForSpotifyRequest(accessToken);
 
         // Make the API call
         try {
@@ -70,7 +67,7 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
     }
 
     @Override
-    public List<Track> getSpotifyTracks(String playlistId, HttpSession session) {
+    public List<Track> getSpotifyTracks(String playlistId, String accessToken) {
         // Generate random int between 0-10 both inclusive
         int randomOffset = getRandomInt(11);
 
@@ -84,7 +81,7 @@ public class SpotifyQueryServiceImpl implements SpotifyQueryService {
                 "https://api.spotify.com/v1/playlists/%s/tracks?%s%s",
                 playlistId, fields, filters);
 
-        HttpEntity<String> entity = createEntityForSpotifyRequest((String) session.getAttribute("accessToken"));
+        HttpEntity<String> entity = createEntityForSpotifyRequest(accessToken);
 
         try {
             ResponseEntity<String> response = sendSpotifyGetRequest(searchQuery, entity);

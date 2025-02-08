@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class Users {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
