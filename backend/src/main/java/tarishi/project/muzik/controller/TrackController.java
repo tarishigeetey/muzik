@@ -1,18 +1,17 @@
 package tarishi.project.muzik.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import tarishi.project.muzik.model.EmotionType;
 import tarishi.project.muzik.model.ErrorResponse;
 import tarishi.project.muzik.model.Track;
 import tarishi.project.muzik.services.impl.*;
-import jakarta.servlet.http.HttpSession;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,29 +25,34 @@ public class TrackController {
     private final MoodServiceImpl moodServiceImpl;
     private final GenreServiceImpl genreServiceImpl;
     private final SpotifyQueryServiceImpl spotifyQueryServiceImpl;
+    private final StringRedisTemplate redisTemplate;
 
     public TrackController(EmotionRecognitionServiceImpl emotionRecognitionServiceImpl,
                            EmotionServiceImpl emotionServiceImpl,
                            MoodServiceImpl moodServiceImpl,
                            GenreServiceImpl genreServiceImpl,
-                           SpotifyQueryServiceImpl spotifyQueryServiceImpl) {
+                           SpotifyQueryServiceImpl spotifyQueryServiceImpl,
+                           StringRedisTemplate redisTemplate) {
         this.emotionRecognitionServiceImpl = emotionRecognitionServiceImpl;
         this.emotionServiceImpl = emotionServiceImpl;
         this.moodServiceImpl = moodServiceImpl;
         this.genreServiceImpl = genreServiceImpl;
         this.spotifyQueryServiceImpl = spotifyQueryServiceImpl;
+        this.redisTemplate = redisTemplate;
     }
 
     @GetMapping("/get-tracks")
     public ResponseEntity<?> getTracks(
             @RequestParam(value = "submission") String input,
-            HttpSession session) {
+            @RequestParam(value = "userId") String userId) {
+
+        String accessToken = redisTemplate.opsForValue().get("spotify:user-access:" + userId);
+
 
         boolean waitForModel = false;
 
-        // validate session principal
-        // TODO - maybe check that the user is in the database?
-        if (session.getAttribute("userId") == null) {
+        // validate if access token is present and not expired
+        if (accessToken == null) {
             return new ResponseEntity<>(new ErrorResponse("Unauthorized access."), HttpStatus.UNAUTHORIZED);
         }
 
@@ -75,10 +79,10 @@ public class TrackController {
             List<String> genreNames = genreServiceImpl.getAllGenre(moodIds);
 
             // get playlist id based on genres
-            String randomPlaylistId = spotifyQueryServiceImpl.getSpotifyPlaylistId(genreNames, session);
+            String randomPlaylistId = spotifyQueryServiceImpl.getSpotifyPlaylistId(genreNames, accessToken);
 
             // get tracks based on playlist id
-            List<Track> tracksList = spotifyQueryServiceImpl.getSpotifyTracks(randomPlaylistId, session);
+            List<Track> tracksList = spotifyQueryServiceImpl.getSpotifyTracks(randomPlaylistId, accessToken);
 
             return new ResponseEntity<>(tracksList, HttpStatus.OK);
 
