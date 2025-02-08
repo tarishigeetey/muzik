@@ -6,5 +6,4 @@ public class HttpSessionInitializer extends AbstractHttpSessionApplicationInitia
     public HttpSessionInitializer() {
         super(RedisHttpSessionConfig.class);
     }
-
 }
