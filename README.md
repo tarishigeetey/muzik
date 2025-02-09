@@ -29,6 +29,12 @@ This project gives you both a creative exploration and a technical demonstration
 - Testing and Debugging: Writing comprehensive tests for API-driven functionality enhanced code reliability and reduced debugging time significantly.
 - Live Production Environment: Deployed back-end using Docker, Azure Redis for Cache, and Microsoft Azure Container Apps. Front-end on Muzik with GitHub Actions for CI/CD.
 
+## 🔎 Resources and Research
+
+- Research Links
+    - https://huggingface.co/docs/transformers/main/en/model_doc/t5#transformers.T5ForConditionalGeneration
+    - https://huggingface.co/docs/transformers/main_classes/pipelines
+    - https://developer.spotify.com/documentation/web-api/tutorials/code-flow
 
 ## ⏭️ Next Steps
 
